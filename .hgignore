@@ -1,0 +1,4 @@
+syntax: glob
+components
+*.js
+testem.log
