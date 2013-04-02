@@ -59,6 +59,8 @@
                        (concat head [tail]))))))
 
 (defmacro fn-di
+  "Like `fn` but will automatically generate dependency injection vectors.
+  Doesn't support multi-arity."
   [& body]
   (let [[docstring v] (if (string? (first body))
                         [(first body) (second body)]
@@ -68,6 +70,8 @@
       (vec (concat (map name v) [`(fn ~@body)])))))
 
 (defmacro defn-di
+  "Like `defn` but will automatically generate dependency injection vectors.
+  Doesn't support multi-arity."
   [di-name & body]
   (let [[docstring v] (if (string? (first body))
                         [(first body) (second body)]
