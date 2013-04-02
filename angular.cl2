@@ -1,4 +1,4 @@
-(fn equal
+(defn equal
   "An other implement of qunit's equal that use Chlorine's = to compare values"
   [actual expected message]
   (.. QUnit (push (= expected actual) actual expected message))
@@ -137,18 +137,22 @@
                         (.. injector (get "$rootScope") $new)))})
        ~@final-body)))
 (defmacro def!
+  "Shortcut for `(def this.var-name ...)`"
   [var-name val]
   `(set! ~(symbol (str "this." (name var-name)))
          ~val))
 (defmacro defn!
+  "Shortcut for `(defn this.fname ...)`"
   [fname & body]
   `(set! ~(symbol (str "this." (name fname)))
          (fn ~@body)))
 (defmacro def$
+  "Shortcut for `(def $scope.var-name ...)`"
   [var-name val]
   `(set! ~(symbol (str "$scope." (name var-name)))
          ~val))
 (defmacro defn$
+  "Shortcut for `(defn $scope.fname ...)`"
   [fname & body]
   `(set! ~(symbol (str "$scope." (name fname)))
          (fn ~@body)))
