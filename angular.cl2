@@ -5,34 +5,35 @@
   )
 (defmacro defmodule
   [module-name module-deps & body]
-  (let [final-body (for [expr body]
-                     (if (map? expr)
-                       (apply concat
-                              (for [k (keys expr)]
-                                (cond
-                                 (= k :route)
-                                 `(config ~(get expr k))
-                                 (= k :filter)
-                                 (let [[filter-name filter-deps & body]
-                                       (get expr k)]
-                                   `(filter ~(name filter-name)
-                                            (fn-di ~filter-deps (fn ~@body))))
-                                 (= k :directive)
-                                 (let [[d-name d-deps link-args & body]
-                                       (get expr k)]
-                                   `(directive
-                                     ~(name d-name)
-                                     (fn-di ~d-deps
-                                            {:link (fn ~link-args
-                                                     ~@body)})))
-                                 (contains? #{:controller
-                                              :service} k)
+  (let [final-body
+        (for [expr body]
+          (if (map? expr)
+            (apply concat
+                   (for [k (keys expr)]
+                     (cond
+                      (= k :route)
+                      `(config ~(get expr k))
+                      (= k :filter)
+                      (let [[filter-name filter-deps & body]
+                            (get expr k)]
+                        `(filter ~(name filter-name)
+                                 (fn-di ~filter-deps (fn ~@body))))
+                      (= k :directive)
+                      (let [[d-name d-deps link-args & body]
+                            (get expr k)]
+                        `(directive
+                          ~(name d-name)
+                          (fn-di ~d-deps
+                                 {:link (fn ~link-args
+                                          ~@body)})))
+                      (contains? #{:controller
+                                   :service} k)
 
-                                 (let [[di-name & body]
-                                       (get expr k)]
-                                   `(~(symbol (name k)) ~(name di-name)
-                                     (fn-di ~@body))))))
-                       expr))]
+                      (let [[di-name & body]
+                            (get expr k)]
+                        `(~(symbol (name k)) ~(name di-name)
+                          (fn-di ~@body))))))
+            expr))]
     `(..
       angular
       (module ~(name module-name) ~(mapv name module-deps))
@@ -140,21 +141,25 @@
                   (set! this.$scope
                         (.. injector (get "$rootScope") $new)))})
        ~@final-body)))
+
 (defmacro def!
   "Shortcut for `(def this.var-name ...)`"
   [var-name val]
   `(set! ~(symbol (str "this." (name var-name)))
          ~val))
+
 (defmacro defn!
   "Shortcut for `(defn this.fname ...)`"
   [fname & body]
   `(set! ~(symbol (str "this." (name fname)))
          (fn ~@body)))
+
 (defmacro def$
   "Shortcut for `(def $scope.var-name ...)`"
   [var-name val]
   `(set! ~(symbol (str "$scope." (name var-name)))
          ~val))
+
 (defmacro defn$
   "Shortcut for `(defn $scope.fname ...)`"
   [fname & body]
