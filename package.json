@@ -1,0 +1,33 @@
+{
+  "name": "angular-qunit",
+  "preferGlobal": true,
+  "version": "0.0.1",
+  "author": "Hoang Minh Thang <p@banphim.net>",
+  "description": "a demo of using angular with qunit written in ChlorineJS",
+  "scripts": {
+    "watch": "chloric -d test.cl2",
+    "compile": "chloric -1 -d test.cl2",
+    "test": "testem",
+    "predeploy": "echo This will be run before deploying the app",
+    "postdeploy": "echo This will be run after deploying the app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chlorinejs/angular-qunit.git"
+  },
+  "keywords": [
+    "angular",
+    "qunit",
+    "chlorinejs"
+  ],
+  "dependencies" : {
+  },
+  "analyze": false,
+  "devDependencies": {
+    "testem"   :  "*"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8"
+  }
+}
