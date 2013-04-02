@@ -42,24 +42,29 @@
       ~@final-body)))
 
 (defmacro defroute
+  "Defines a route form. Usage:
+  (defroute
+    \"/an-url\" [myCtrl \"an-template-url.html\"]
+    \"/alias\"  \"/stuff\"
+   :default {:some :config :map ...}"
   [& routes]
   `(fn-di [$routeProvider]
-          ~(concat '(.. $routeProvider)
-                   (for [[route route-config] (partition 2 routes)]
-                     (let [head (if (keyword? route)
-                                  `(otherwise)
-                                  `(when ~route))
-                           tail (cond
-                                 (vector? route-config)
-                                 {:controller (first route-config)
-                                  :templateUrl (second route-config)}
+          (.. $routeProvider
+              ~@(for [[route route-config] (partition 2 routes)]
+                  (let [head (if (keyword? route)
+                               'otherwise
+                               `(when ~route))
+                        tail (cond
+                              (vector? route-config)
+                              {:controller (first route-config)
+                               :templateUrl (second route-config)}
 
-                                 (string? route-config)
-                                 {:redirectTo route-config}
+                              (string? route-config)
+                              {:redirectTo route-config}
 
-                                 :default
-                                 route-config)]
-                       (concat head [tail]))))))
+                              :default
+                              route-config)]
+                    `(~@head ~tail))))))
 
 (defmacro fn-di
   "Like `fn` but will automatically generate dependency injection vectors.
