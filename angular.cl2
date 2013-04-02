@@ -106,7 +106,7 @@
                 test-tabular
                 (fn [test-type test-name test-body]
                   (for [expr test-body]
-                    (if (= 'tabular (first expr))
+                    (if (= :tabular (first expr))
                       (apply concat
                              (for [[test-case expect-val]
                                    (partition 2 (rest expr))]

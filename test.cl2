@@ -5,16 +5,17 @@
 
  (controller-test
   myCtrl
-  (tabular
+  (:tabular
    (addTwo 1) {:result 3})
   )
 
  (service-test
   myService
-  (tabular (addThree 1) 4)
+  (:tabular (addThree 1) 4)
   )
 
  (filter-test
   myFilter
-  (tabular [1] 6)
+  (:tabular
+   [1] 6)
   ))
