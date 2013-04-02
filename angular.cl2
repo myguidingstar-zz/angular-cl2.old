@@ -90,7 +90,7 @@
                     `(def $controller
                        (.. injector (get "$controller")))
                     `($controller ~(name test-name)
-                                  {:$scope (-> this :$scope)})
+                                  {:$scope this.$scope})
                     )
                    (= 'service-test test-type)
                    (list
@@ -112,7 +112,7 @@
                                    (partition 2 (rest expr))]
                                (cond
                                 (= 'controller-test test-type)
-                                `(equal (.. (-> this :$scope) ~test-case)
+                                `(equal (.. this.$scope ~test-case)
                                         ~expect-val)
                                 (= 'service-test test-type)
                                 `(equal (.. ~test-name ~test-case)
@@ -133,7 +133,7 @@
        (module "tests"
                {:setup
                 (fn []
-                  (set! (-> this :$scope)
+                  (set! this.$scope
                         (.. injector (get "$rootScope") $new)))})
        ~@final-body)))
 (defmacro def!
