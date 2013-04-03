@@ -6,10 +6,9 @@
   "description": "a demo of using angular with qunit written in ChlorineJS",
   "scripts": {
     "watch": "chloric -d test.cl2",
-    "compile": "chloric -1 -d test.cl2",
-    "test": "testem",
-    "predeploy": "echo This will be run before deploying the app",
-    "postdeploy": "echo This will be run after deploying the app"
+    "bare-compile": "chloric -1 -b main.cl2",
+    "compile": "chloric -1 -B main.cl2",
+    "test": "testem"
   },
   "repository": {
     "type": "git",
