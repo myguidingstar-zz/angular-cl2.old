@@ -18,4 +18,10 @@
   myFilter
   (:tabular
    [1] 6)
+  )
+
+ (filter-test
+  yourFilter
+  (:tabular
+   [2] 8)
   ))
