@@ -5,8 +5,10 @@
            (yourFilter [] [s] (+ s 6)))
   (:controller
    (myCtrl
-    [$scope]
-    (defn$ addTwo [n] {:result (+ n 2)})))
+    [$scope myService]
+    (defn$ addTwo [n] {:result (+ n 2)})
+    (defn$ serviceAdd [n]
+      (myService.addThree n))))
   (:service
    (myService
     []
