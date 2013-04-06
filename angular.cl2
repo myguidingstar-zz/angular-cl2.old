@@ -34,8 +34,10 @@
                   (let [[di-name & body]
                         section-expr]
                     `(~(symbol (name section-type)) ~(name di-name)
-                      (fn-di ~@body))))))
-             section)))]
+                      (fn-di ~@body)))
+                  :default
+                  (throw (Exception. "Unsupported syntax")))))
+             [section])))]
     `(..
       angular
       (module ~(name module-name) ~(mapv name module-deps))
@@ -150,8 +152,8 @@
        ~@final-body)))
 
 (defmacro def!
-  "Shortcut for `(def this.var-name ...)`"
-  [var-name val]
+  "Shortcut for `(set! this.var-name ...)`"
+  [var-name & [val]]
   `(set! ~(symbol (str "this." (name var-name)))
          ~val))
 
@@ -162,8 +164,8 @@
          (fn ~@body)))
 
 (defmacro def$
-  "Shortcut for `(def $scope.var-name ...)`"
-  [var-name val]
+  "Shortcut for `(set! $scope.var-name ...)`"
+  [var-name & [val]]
   `(set! ~(symbol (str "$scope." (name var-name)))
          ~val))
 
