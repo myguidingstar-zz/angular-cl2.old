@@ -4,8 +4,13 @@
   (.. QUnit (push (= expected actual) actual expected message))
   )
 (defmacro defmodule
-  [module-name module-deps & section-dclrs]
-  (let [final-body
+  [module-dclrs & section-dclrs]
+  (let [final-module (if (symbol? module-dclrs)
+                       module-dclrs
+                       (let [[module-name module-deps] module-dclrs]
+                         `(.. angular (module ~(name module-name)
+                                              ~(mapv name module-deps)))))
+        final-body
         (apply
          concat
          (for [section section-dclrs]
@@ -38,10 +43,11 @@
                   :default
                   (throw (Exception. "Unsupported syntax")))))
              [section])))]
-    `(..
-      angular
-      (module ~(name module-name) ~(mapv name module-deps))
-      ~@final-body)))
+    (if (zero? (count final-body))
+      final-module
+      `(..
+        ~final-module
+        ~@final-body))))
 
 (defmacro defroute
   "Defines a route form. Usage:
