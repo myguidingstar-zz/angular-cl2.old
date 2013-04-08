@@ -23,5 +23,15 @@
  (filter-test
   yourFilter
   (:tabular
-   [2] 8)
+   [2] 8))
+ (directive-test
+  MyDirective
+  (def
+    element
+    (($compile (hiccup
+                [:div {:my-directive "foo"}])) this.$scope))
+  (def!$ foo 1)
+  (. this.$scope $apply)
+  (equal "5" (.. element text))
+  (delete this.$scope.foo)
   ))
