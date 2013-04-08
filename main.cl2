@@ -1,6 +1,6 @@
 (include! "./angular.cl2")
 
-(defmodule myApp []
+(defmodule (myApp [])
   (:filter (myFilter [] [s] (+ s 5))
            (yourFilter [] [s] (+ s 6)))
   (:controller
