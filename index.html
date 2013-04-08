@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <title>My HTML File</title>
-	<link rel="stylesheet" href="components/bootstrap/css/bootstrap-awesome.min.css">
-	<link rel="stylesheet" href="components/bootstrap/css/responsive.min.css">
-	<link rel="stylesheet" href="/testem/qunit.css"/>
+<link rel="stylesheet" href="components/bootstrap/css/bootstrap-awesome.min.css">
+<link rel="stylesheet" href="components/bootstrap/css/responsive.min.css">
+<link rel="stylesheet" href="/testem/qunit.css"/>
 
-	<script src="components/angular/angular.min.js"></script>
-	<script src="main.js"></script>
+<script src="components/angular/angular.min.js"></script>
+<script src="main.js"></script>
 </head>
 <body ng-controller="myCtrl">
-<p>My controller: {{addTwo(2)}}</p> 
-<p>Service: {{serviceAdd(5)}}</p> 
+<p>My controller: {{addTwo(2)}}</p>
+<p>Service: {{serviceAdd(5)}}</p>
 <p>My filter: {{2|myFilter}}</p>
- 
+<div my-directive="3"></div>
 </body>
 </html>
