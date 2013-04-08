@@ -148,6 +148,24 @@
                                 `(equal (($filter ~(name test-name))
                                          ~@test-case)
                                         ~expect-val)
+                                (= 'directive-test test-type)
+                                (let [[hiccup-template scope-map] test-case]
+                                  `(do
+                                     (def
+                                       element
+                                       (($compile (hiccup
+                                                   ~hiccup-template))
+                                        this.$scope))
+                                     ~(apply
+                                       concat
+                                       (for [[scope-var scope-val] scope-map]
+                                         `(do (def!$ ~scope-var ~scope-val)
+                                              (. this.$scope $apply)
+                                              (equal ~expect-val
+                                                     (.. element text))
+                                              (delete
+                                               (get* this.$scope ~scope-var)))
+                                         ))))
                                 :default
                                 `(equal ~test-case ~expect-val))))
                       expr)))]

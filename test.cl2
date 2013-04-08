@@ -34,4 +34,11 @@
   (. this.$scope $apply)
   (equal "5" (.. element text))
   (delete this.$scope.foo)
+  )
+ (directive-test
+  MyDirective
+  (:tabular
+   [[:div {:my-directive "foo"}]
+    {:foo 2}]
+   "6")
   ))
