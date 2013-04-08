@@ -109,22 +109,22 @@
                 test-init
                 (fn [test-type]
                   (cond
-                   (= 'controller-test test-type)
+                   (= :controller test-type)
                    (list
                     `(def $controller
                        (.. injector (get "$controller")))
                     `($controller ~(name test-name)
                                   {:$scope this.$scope}))
 
-                   (= 'service-test test-type)
+                   (= :service test-type)
                    (list
                     `(def ~test-name (.. injector (get ~(name test-name)))))
 
-                   (= 'filter-test test-type)
+                   (= :filter test-type)
                    (list
                     `(def $filter (.. injector (get "$filter"))))
 
-                   (= 'directive-test test-type)
+                   (= :directive test-type)
                    (list
                     `(def $compile (.. injector (get "$compile"))))
 
@@ -138,17 +138,17 @@
                              (for [[test-case expect-val]
                                    (partition 2 (rest expr))]
                                (cond
-                                (= 'controller-test test-type)
+                                (= :controller test-type)
                                 `(equal (.. this.$scope ~test-case)
                                         ~expect-val)
-                                (= 'service-test test-type)
+                                (= :service test-type)
                                 `(equal (.. ~test-name ~test-case)
                                         ~expect-val)
-                                (= 'filter-test test-type)
+                                (= :filter test-type)
                                 `(equal (($filter ~(name test-name))
                                          ~@test-case)
                                         ~expect-val)
-                                (= 'directive-test test-type)
+                                (= :directive test-type)
                                 (let [[hiccup-template scope-map] test-case]
                                   `(do
                                      (def

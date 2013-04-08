@@ -3,28 +3,28 @@
 (ng-test
  myApp
 
- (controller-test
+ (:controller
   myCtrl
   (:tabular
    (addTwo 1) {:result 3})
   )
 
- (service-test
+ (:service
   myService
   (:tabular (addThree 1) 4)
   )
 
- (filter-test
+ (:filter
   myFilter
   (:tabular
    [1] 6)
   )
 
- (filter-test
+ (:filter
   yourFilter
   (:tabular
    [2] 8))
- (directive-test
+ (:directive
   MyDirective
   (def
     element
@@ -35,7 +35,7 @@
   (equal "5" (.. element text))
   (delete this.$scope.foo)
   )
- (directive-test
+ (:directive
   MyDirective
   (:tabular
    [[:div {:my-directive "foo"}]
