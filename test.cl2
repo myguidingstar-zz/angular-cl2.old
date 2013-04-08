@@ -29,11 +29,11 @@
   (def
     element
     (($compile (hiccup
-                [:div {:my-directive "foo"}])) this.$scope))
+                [:div {:my-directive "foo"}])) (. this -$scope)))
   (def!$ foo 1)
-  (. this.$scope $apply)
+  (.. this -$scope $apply)
   (equal "5" (.. element text))
-  (delete this.$scope.foo)
+  (delete (.. this -$scope -foo))
   )
  (:directive
   MyDirective

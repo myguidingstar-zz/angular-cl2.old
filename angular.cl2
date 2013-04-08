@@ -114,7 +114,7 @@
                     `(def $controller
                        (.. injector (get "$controller")))
                     `($controller ~(name test-name)
-                                  {:$scope this.$scope}))
+                                  {:$scope (. this -$scope)}))
 
                    (= :service test-type)
                    (list
@@ -139,7 +139,7 @@
                                    (partition 2 (rest expr))]
                                (cond
                                 (= :controller test-type)
-                                `(equal (.. this.$scope ~test-case)
+                                `(equal (.. this -$scope ~test-case)
                                         ~expect-val)
                                 (= :service test-type)
                                 `(equal (.. ~test-name ~test-case)
@@ -155,16 +155,17 @@
                                        element
                                        (($compile (hiccup
                                                    ~hiccup-template))
-                                        this.$scope))
+                                        (. this -$scope)))
                                      ~(apply
                                        concat
                                        (for [[scope-var scope-val] scope-map]
                                          `(do (def!$ ~scope-var ~scope-val)
-                                              (. this.$scope $apply)
+                                              (.. this -$scope $apply)
                                               (equal ~expect-val
                                                      (.. element text))
                                               (delete
-                                               (get* this.$scope ~scope-var)))
+                                               (get* (. this -$scope)
+                                                     ~scope-var)))
                                          ))))
                                 :default
                                 `(equal ~test-case ~expect-val))))
@@ -178,36 +179,36 @@
        (module "tests"
                {:setup
                 (fn []
-                  (set! this.$scope
+                  (set! (. this -$scope)
                         (.. injector (get "$rootScope") $new)))})
        ~@final-body)))
 
 (defmacro def!
   "Shortcut for `(set! this.var-name ...)`"
   [var-name & [val]]
-  `(set! ~(symbol (str "this." (name var-name)))
+  `(set! (. this ~(symbol (str "-" (name var-name))))
          ~val))
 
 (defmacro defn!
   "Shortcut for `(defn this.fname ...)`"
   [fname & body]
-  `(set! ~(symbol (str "this." (name fname)))
+  `(set! (. this ~(symbol (str "-" (name fname))))
          (fn ~@body)))
 
 (defmacro def$
   "Shortcut for `(set! $scope.var-name ...)`"
   [var-name & [val]]
-  `(set! ~(symbol (str "$scope." (name var-name)))
+  `(set! (. $scope ~(symbol (str "-" (name var-name))))
          ~val))
 
 (defmacro def!$
   "Shortcut for `(set! this.$scope.var-name ...)`"
   [var-name & [val]]
-  `(set! ~(symbol (str "this.$scope." (name var-name)))
+  `(set! (.. this -$scope ~(symbol (str "-" (name var-name))))
          ~val))
 
 (defmacro defn$
   "Shortcut for `(defn $scope.fname ...)`"
   [fname & body]
-  `(set! ~(symbol (str "$scope." (name fname)))
+  `(set! (. $scope ~(symbol (str "-" (name fname))))
          (fn ~@body)))
