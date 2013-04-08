@@ -132,21 +132,10 @@
                    nil))
                 expand-tabular
                 (fn [expr]
-                  (for [[test-case expect-val]
-                        (partition 2 (rest expr))]
-                    (cond
-                     (= :controller test-type)
-                     `(equal (.. this -$scope ~test-case)
-                             ~expect-val)
-                     (= :service test-type)
-                     `(equal (.. ~test-name ~test-case)
-                             ~expect-val)
-                     (= :filter test-type)
-                     `(equal (($filter ~(name test-name))
-                              ~@test-case)
-                             ~expect-val)
-                     (= :directive test-type)
-                     (let [[hiccup-template scope-map] test-case]
+                  (if (= :directive test-type)
+                    (let [[hiccup-template scope-map & test-table]
+                          (rest expr)]
+                      (list
                        `(do
                           (def
                             element
@@ -158,14 +147,32 @@
                             (for [[scope-var scope-val] scope-map]
                               `(do (def!$ ~scope-var ~scope-val)
                                    (.. this -$scope $apply)
-                                   (equal ~expect-val
-                                          (.. element text))
+                                   ~@(for [[expect-val test-method]
+                                           (partition 2 test-table)]
+                                       `(equal ~expect-val
+                                               (.. element ~test-method)))
                                    (delete
                                     (get* (. this -$scope)
                                           ~scope-var)))
-                              ))))
-                     :default
-                     `(equal ~test-case ~expect-val))))
+                              )))))
+                    ;; test-types other than :directive
+                    (for [[test-case expect-val]
+                          (partition 2 (rest expr))]
+                      (cond
+                       (= :controller test-type)
+                       `(equal (.. this -$scope ~test-case)
+                               ~expect-val)
+                       (= :service test-type)
+                       `(equal (.. ~test-name ~test-case)
+                               ~expect-val)
+                       (= :filter test-type)
+                       `(equal (($filter ~(name test-name))
+                                ~@test-case)
+                               ~expect-val)
+
+
+                       :default
+                       `(equal ~test-case ~expect-val)))))
                 test-tabular
                 (fn [test-type test-name test-body]
                   (for [expr test-body]

@@ -38,7 +38,8 @@
  (:directive
   MyDirective
   (:tabular
-   [[:div {:my-directive "foo"}]
-    {:foo 2}]
-   "6")
+   [:div {:my-directive "foo"}]
+   {:foo 2}
+   "6" text
+   "6" (text))
   ))
