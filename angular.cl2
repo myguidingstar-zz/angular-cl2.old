@@ -20,20 +20,24 @@
                  (cond
                   (= :route section-type)
                   `(config ~section-expr)
+
                   (= :filter section-type)
                   (let [[filter-name filter-deps & filter-body]
                         section-expr]
                     `(filter ~(name filter-name)
                              (fn-di ~filter-deps
                                     (fn ~@filter-body))))
+
                   (= :directive section-type)
-                  (let [[d-name d-deps link-args & body]
+                  (let [[d-name d-deps directive-def]
                         section-expr]
                     `(directive
                       ~(name d-name)
                       (fn-di ~d-deps
-                             {:link (fn ~link-args
-                                      ~@body)})))
+                             ~(if (map? directive-def)
+                                directive-def
+                                `{:link ~directive-def}))))
+
                   (contains? #{:controller
                                :service} section-type)
                   (let [[di-name & body]
@@ -110,17 +114,20 @@
                     `(def $controller
                        (.. injector (get "$controller")))
                     `($controller ~(name test-name)
-                                  {:$scope this.$scope})
-                    )
+                                  {:$scope this.$scope}))
+
                    (= 'service-test test-type)
                    (list
                     `(def ~test-name (.. injector (get ~(name test-name)))))
+
                    (= 'filter-test test-type)
                    (list
                     `(def $filter (.. injector (get "$filter"))))
+
                    (= 'directive-test test-type)
                    (list
                     `(def $compile (.. injector (get "$compile"))))
+
                    :default
                    nil))
                 test-tabular
@@ -173,6 +180,12 @@
   "Shortcut for `(set! $scope.var-name ...)`"
   [var-name & [val]]
   `(set! ~(symbol (str "$scope." (name var-name)))
+         ~val))
+
+(defmacro def!$
+  "Shortcut for `(set! this.$scope.var-name ...)`"
+  [var-name & [val]]
+  `(set! ~(symbol (str "this.$scope." (name var-name)))
          ~val))
 
 (defmacro defn$
