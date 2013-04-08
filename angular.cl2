@@ -33,10 +33,7 @@
                         section-expr]
                     `(directive
                       ~(name d-name)
-                      (fn-di ~d-deps
-                             ~(if (map? directive-def)
-                                directive-def
-                                `{:link ~directive-def}))))
+                      (fn-di ~d-deps ~directive-def)))
 
                   (contains? #{:controller
                                :service} section-type)
