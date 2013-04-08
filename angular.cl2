@@ -130,45 +130,48 @@
 
                    :default
                    nil))
+                expand-tabular
+                (fn [expr]
+                  (for [[test-case expect-val]
+                        (partition 2 (rest expr))]
+                    (cond
+                     (= :controller test-type)
+                     `(equal (.. this -$scope ~test-case)
+                             ~expect-val)
+                     (= :service test-type)
+                     `(equal (.. ~test-name ~test-case)
+                             ~expect-val)
+                     (= :filter test-type)
+                     `(equal (($filter ~(name test-name))
+                              ~@test-case)
+                             ~expect-val)
+                     (= :directive test-type)
+                     (let [[hiccup-template scope-map] test-case]
+                       `(do
+                          (def
+                            element
+                            (($compile (hiccup
+                                        ~hiccup-template))
+                             (. this -$scope)))
+                          ~(apply
+                            concat
+                            (for [[scope-var scope-val] scope-map]
+                              `(do (def!$ ~scope-var ~scope-val)
+                                   (.. this -$scope $apply)
+                                   (equal ~expect-val
+                                          (.. element text))
+                                   (delete
+                                    (get* (. this -$scope)
+                                          ~scope-var)))
+                              ))))
+                     :default
+                     `(equal ~test-case ~expect-val))))
                 test-tabular
                 (fn [test-type test-name test-body]
                   (for [expr test-body]
                     (if (= :tabular (first expr))
                       (apply concat
-                             (for [[test-case expect-val]
-                                   (partition 2 (rest expr))]
-                               (cond
-                                (= :controller test-type)
-                                `(equal (.. this -$scope ~test-case)
-                                        ~expect-val)
-                                (= :service test-type)
-                                `(equal (.. ~test-name ~test-case)
-                                        ~expect-val)
-                                (= :filter test-type)
-                                `(equal (($filter ~(name test-name))
-                                         ~@test-case)
-                                        ~expect-val)
-                                (= :directive test-type)
-                                (let [[hiccup-template scope-map] test-case]
-                                  `(do
-                                     (def
-                                       element
-                                       (($compile (hiccup
-                                                   ~hiccup-template))
-                                        (. this -$scope)))
-                                     ~(apply
-                                       concat
-                                       (for [[scope-var scope-val] scope-map]
-                                         `(do (def!$ ~scope-var ~scope-val)
-                                              (.. this -$scope $apply)
-                                              (equal ~expect-val
-                                                     (.. element text))
-                                              (delete
-                                               (get* (. this -$scope)
-                                                     ~scope-var)))
-                                         ))))
-                                :default
-                                `(equal ~test-case ~expect-val))))
+                             (expand-tabular expr))
                       expr)))]
             `(deftest ~test-name
                ~@(test-init test-type)
