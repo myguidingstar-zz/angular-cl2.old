@@ -6,35 +6,22 @@
  (:controller
   myCtrl
   (:tabular
-   (addTwo 1) {:result 3})
-  )
+   (addTwo 1) {:result 3}))
 
  (:service
   myService
-  (:tabular (addThree 1) 4)
-  )
+  (:tabular (addThree 1) 4))
 
  (:filter
   myFilter
   (:tabular
-   [1] 6)
-  )
+   [1] 6))
 
  (:filter
   yourFilter
   (:tabular
    [2] 8))
- (:directive
-  MyDirective
-  (def
-    element
-    (($compile (hiccup
-                [:div {:my-directive "foo"}])) (. this -$scope)))
-  (def!$ foo 1)
-  (.. this -$scope $apply)
-  (equal "5" (.. element text))
-  (delete (.. this -$scope -foo))
-  )
+
  (:directive
   MyDirective
   (:tabular
@@ -48,5 +35,4 @@
    ;; To get full list of them, consult `angular.element` section
    ;; in AngularJS Global APIs.
    "6" text
-   "6" (text))
-  ))
+   "6" (text))))
