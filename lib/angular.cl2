@@ -34,7 +34,6 @@
                     `(directive
                       ~(name d-name)
                       (fn-di ~d-deps ~directive-def)))
-
                   (contains? #{:controller
                                :service} section-type)
                   (let [[di-name & body]
@@ -61,7 +60,7 @@
           (.. $routeProvider
               ~@(for [[route route-config] (partition 2 routes)]
                   (let [head (if (keyword? route)
-                               'otherwise
+                               ['otherwise]
                                `(when ~route))
                         tail (cond
                               (vector? route-config)
@@ -73,7 +72,8 @@
 
                               :default
                               route-config)]
-                    `(~@head ~tail))))))
+                    `(~@head ~tail))))
+          nil))
 
 (defmacro fn-di
   "Like `fn` but will automatically generate dependency injection vectors.
