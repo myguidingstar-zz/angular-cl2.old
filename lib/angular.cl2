@@ -34,8 +34,9 @@
                     `(directive
                       ~(name d-name)
                       (fn-di ~d-deps ~directive-def)))
-                  (contains? #{:controller
-                               :service} section-type)
+
+                  (contains? #{:controller :factory :service}
+                             section-type)
                   (let [[di-name & body]
                         section-expr]
                     `(~(symbol (name section-type)) ~(name di-name)
