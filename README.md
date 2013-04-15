@@ -1,6 +1,6 @@
 Angular-cl2
 ==========
-Angular macros for [ChlorineJS]().
+Angular macros for [ChlorineJS](https://github.com/chlorinejs/chlorine/wiki).
 
 Comsume this package
 ------------------
