@@ -1,28 +1,29 @@
 {
-  "name": "angular-qunit",
-  "preferGlobal": true,
-  "version": "0.0.1",
-  "author": "Hoang Minh Thang <p@banphim.net>",
-  "description": "a demo of using angular with qunit written in ChlorineJS",
+  "name": "angular-cl2",
+  "version": "0.1.0",
+  "description": "Angular macros for ChlorineJS",
   "scripts": {
-    "watch": "chloric -d test.cl2",
-    "bare-compile": "chloric -1 -b main.cl2",
-    "compile": "chloric -1 -B main.cl2",
-    "test": "testem"
+    "watch": "cl2c -d test/test.cl2",
+    "bare-compile": "cl2c -1 -b dev/main.cl2",
+    "compile": "cl2c -1 -B dev/main.cl2",
+    "test": "testem -f test/testem.json"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/chlorinejs/angular-qunit.git"
+    "url": "http://github.com/chlorinejs/angular-cl2.git"
   },
   "keywords": [
     "angular",
     "qunit",
-    "chlorinejs"
+    "chlorinejs",
+    "macro"
   ],
-  "dependencies" : {
+  "directories": {
+    "lib":  "./lib"
   },
   "analyze": false,
   "devDependencies": {
+    "chloric"  :  "0.1.9",
     "testem"   :  "*"
   },
   "license": "MIT",
