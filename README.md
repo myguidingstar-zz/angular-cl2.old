@@ -3,7 +3,7 @@ angular-qunit
 
 AngularJS seed with QUnit + testem written in [ChlorineJS](https://github.com/chlorinejs)
 
-You need [Chloric compiler](https://github.com/chlorinejs/chloric), NodeJS, [Bower](https://github.com/twitter/bower) installed.
+You need Java, NodeJS, [Bower](https://github.com/twitter/bower) installed.
 
 Install dependencies
 ------------------
