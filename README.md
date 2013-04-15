@@ -2,6 +2,8 @@ Angular-cl2
 ==========
 Angular macros for [ChlorineJS](https://github.com/chlorinejs/chlorine/wiki).
 
+[![Build Status](https://travis-ci.org/chlorinejs/angular-cl2.png?branch=master)](https://travis-ci.org/chlorinejs/angular-cl2)
+
 Comsume this package
 ------------------
 You need Java, NodeJS installed.
