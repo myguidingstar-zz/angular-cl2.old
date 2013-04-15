@@ -6,7 +6,8 @@
     "watch": "cl2c -d test/test.cl2",
     "bare-compile": "cl2c -1 -b dev/main.cl2",
     "compile": "cl2c -1 -B dev/main.cl2",
-    "test": "testem -f test/testem.json"
+    "pretest": "cl2c -1 -d test/test.cl2",
+    "test": "testem  -s phantomjs -f test/testem.json ci"
   },
   "repository": {
     "type": "git",
