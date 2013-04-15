@@ -1,4 +1,4 @@
-(include! "./angular.cl2")
+(include! "../lib/angular.cl2")
 
 (defmodule (myApp [])
   (:directive
