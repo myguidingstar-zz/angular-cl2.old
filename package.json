@@ -24,7 +24,7 @@
   },
   "analyze": false,
   "devDependencies": {
-    "chloric"  :  "0.1.9",
+    "chloric"  :  "0.1.10",
     "testem"   :  "*"
   },
   "license": "EPL",
