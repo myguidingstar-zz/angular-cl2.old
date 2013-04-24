@@ -26,6 +26,7 @@
  []
  (defn! addThree [n] (+ n 3)))
 
+;; generic defmodule usage
 (defmodule myApp
   (:filter (myFilter [] [s] (+ s 5))))
 
