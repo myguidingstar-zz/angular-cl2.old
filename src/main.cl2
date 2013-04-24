@@ -1,6 +1,8 @@
 (include! "../lib/angular.cl2")
 
-(defmodule (myApp [])
+(defapp myApp [])
+
+(defmodule myApp
   (:directive
    (myDirective
     []
