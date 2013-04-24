@@ -27,5 +27,8 @@
  (defn! addThree [n] (+ n 3)))
 
 (defmodule myApp
-  (:filter (myFilter [] [s] (+ s 5))
-           (yourFilter [] [s] (+ s 6))))
+  (:filter (myFilter [] [s] (+ s 5))))
+
+(deffilter yourFilter []
+  [s]
+  (+ s 6))
