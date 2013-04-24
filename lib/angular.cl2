@@ -232,3 +232,9 @@ with the same name to it."
   [app-name & module-dclrs]
   `(defmodule ~app-name
      (:directive ~module-dclrs)))
+
+(defmacro defcontroller
+  "Defines a controller for an app"
+  [app-name & module-dclrs]
+  `(defmodule ~app-name
+     (:controller ~module-dclrs)))
