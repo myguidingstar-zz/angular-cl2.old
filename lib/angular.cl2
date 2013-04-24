@@ -226,3 +226,9 @@
 with the same name to it."
   [app-name app-deps]
   `(def ~app-name (defmodule (~app-name ~app-deps))))
+
+(defmacro defdirective
+  "Defines a directive for an app"
+  [app-name & module-dclrs]
+  `(defmodule ~app-name
+     (:directive ~module-dclrs)))
