@@ -19,11 +19,10 @@
   (defn$ serviceAdd [n]
     (myService.addThree n)))
 
+(defservice myApp myService
+ []
+ (defn! addThree [n] (+ n 3)))
+
 (defmodule myApp
   (:filter (myFilter [] [s] (+ s 5))
-           (yourFilter [] [s] (+ s 6)))
-  (:service
-   (myService
-    []
-    (defn! addThree [n] (+ n 3))))
-  )
+           (yourFilter [] [s] (+ s 6))))
