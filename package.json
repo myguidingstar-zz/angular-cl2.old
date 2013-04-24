@@ -1,3 +1,4 @@
+
 {
   "name": "angular-cl2",
   "version": "0.1.0",
@@ -5,7 +6,7 @@
   "scripts": {
     "watch": "cl2c -d test/test.cl2",
     "bare-compile": "cl2c -1 -b dev/main.cl2",
-    "compile": "cl2c -1 -B dev/main.cl2",
+    "compile": "cl2c -1 -B src/main.cl2",
     "pretest": "cl2c -1 -d test/test.cl2",
     "test": "testem  -s phantomjs -f test/testem.json ci"
   },

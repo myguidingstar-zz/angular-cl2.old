@@ -1,4 +1,4 @@
-(include! "../dev/main.cl2")
+(include! "../src/main.cl2")
 
 (ng-test
  myApp

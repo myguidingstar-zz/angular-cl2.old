@@ -29,7 +29,7 @@ Install dependencies
 # install testem to run the tests on the fly
 npm install
 # install components via Twitter's bower
-cd dev
+cd src
 bower install
 ./bootstrap_font-awesome.sh
 cd ..
@@ -61,4 +61,4 @@ compare vectors and maps, etc), you can skip the library by:
 ```
 npm run-script bare-compile
 ```
-Now open `dev/index.html` in your favourite browser and enjoy!
+Now open `src/index.html` in your favourite browser and enjoy!

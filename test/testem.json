@@ -4,6 +4,6 @@
   "routes": {
     "/test.html" : "test/test.html",
     "/test.js"   : "test/test.js",
-    "/components": "dev/components"
+    "/components": "src/components"
   }
 }

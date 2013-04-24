@@ -1,8 +1,8 @@
 (defn equal
   "An other implement of qunit's equal that use Chlorine's = to compare values"
   [actual expected message]
-  (.. QUnit (push (= expected actual) actual expected message))
-  )
+  (.. QUnit (push (= expected actual) actual expected message)))
+
 (defmacro defmodule
   [module-dclrs & section-dclrs]
   (let [final-module (if (symbol? module-dclrs)
