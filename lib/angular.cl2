@@ -237,18 +237,33 @@ with the same name to it."
 (defmacro defsinglemodule
   "Helper macro for `def[directive, controller etc]` macros"
   [module-type body]
-  (let [[app-name body] (if ;; if app is specified, body is currently
-                            ;; `(app-name module-name & rest)`
-                            (symbol? (second body))
-                          [(first body) (rest body)]
-                          ;; else no app is specified then use
-                          ;; *last-angular-app*
-                          [(or @*last-angular-app*
-                               (throw
-                                (Exception. "No last Angular app defined!")))
-                           body])]
+  (let [[app-name body]
+        ;; if app is specified, body is currently
+        ;; `(app-name module-name & more)`
+        ;; or `(module-name & more)`
+
+        (cond
+         ;; checks the potential app-name
+         (and (= :route module-type)
+              (or
+               (list? (first body))
+               (symbol? (first body))))
+         [(first body) (rest body)]
+         ;; else checks the module-name
+         (and (not= :route module-type)
+              (symbol? (second body)))
+         [(first body) (rest body)]
+         ;; else no app is specified then use
+         ;; *last-angular-app*
+         :else
+         [(or @*last-angular-app*
+              (throw
+               (Exception. "No last Angular app defined!")))
+          body])]
     `(defmodule ~app-name
-       (~module-type ~body))))
+       (~module-type ~@(if (= :route module-type)
+                         body
+                         [body])))))
 
 (defmacro defdirective
   "Defines a directive for an app"
@@ -274,3 +289,8 @@ with the same name to it."
   "Defines a filter for an app. Requires an extra dependency vector."
   [& body]
   `(defsinglemodule :filter ~body))
+
+(defmacro defroute
+  "Defines a filter for an app."
+  [& body]
+  `(defsinglemodule :route ~body))
