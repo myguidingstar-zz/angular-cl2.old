@@ -220,3 +220,9 @@
   [fname & body]
   `(set! (. $scope ~(symbol (str "-" (name fname))))
          (fn ~@body)))
+
+(defmacro defapp
+  "Creates an Angular app with specified dependencies, associates a var
+with the same name to it."
+  [app-name app-deps]
+  `(def ~app-name (defmodule (~app-name ~app-deps))))
