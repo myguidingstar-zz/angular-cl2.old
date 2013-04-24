@@ -16,33 +16,32 @@
          (for [section section-dclrs]
            (if (keyword? (first section))
              (let [[section-type & section-exprs] section]
-               (for [section-expr section-exprs]
-                 (cond
-                  (= :route section-type)
-                  `(config ~section-expr)
+               (if (= :route section-type)
+                 [`(config (defroutetable ~@section-exprs))]
+                 (for [section-expr section-exprs]
+                   (cond
+                    (= :filter section-type)
+                    (let [[filter-name filter-deps & filter-body]
+                          section-expr]
+                      `(filter ~(name filter-name)
+                               (fn-di ~filter-deps
+                                      (fn ~@filter-body))))
 
-                  (= :filter section-type)
-                  (let [[filter-name filter-deps & filter-body]
-                        section-expr]
-                    `(filter ~(name filter-name)
-                             (fn-di ~filter-deps
-                                    (fn ~@filter-body))))
+                    (= :directive section-type)
+                    (let [[d-name d-deps directive-def]
+                          section-expr]
+                      `(directive
+                        ~(name d-name)
+                        (fn-di ~d-deps ~directive-def)))
 
-                  (= :directive section-type)
-                  (let [[d-name d-deps directive-def]
-                        section-expr]
-                    `(directive
-                      ~(name d-name)
-                      (fn-di ~d-deps ~directive-def)))
-
-                  (contains? #{:controller :factory :service}
-                             section-type)
-                  (let [[di-name & body]
-                        section-expr]
-                    `(~(symbol (name section-type)) ~(name di-name)
-                      (fn-di ~@body)))
-                  :default
-                  (throw (Exception. "Unsupported syntax")))))
+                    (contains? #{:controller :factory :service}
+                               section-type)
+                    (let [[di-name & body]
+                          section-expr]
+                      `(~(symbol (name section-type)) ~(name di-name)
+                        (fn-di ~@body)))
+                    :default
+                    (throw (Exception. "Unsupported syntax"))))))
              [section])))]
     (if (zero? (count final-body))
       final-module
