@@ -270,3 +270,8 @@ with the same name to it."
   "Defines a factory for an app"
   [& body]
   `(defsinglemodule :factory ~body))
+
+(defmacro deffilter
+  "Defines a filter for an app. Requires an extra dependency vector."
+  [& body]
+  `(defsinglemodule :filter ~body))
