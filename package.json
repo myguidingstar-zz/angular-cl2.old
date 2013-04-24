@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Angular macros for ChlorineJS",
   "scripts": {
-    "watch": "cl2c -d test/test.cl2",
+    "watch": "cl2c -d -p test/test.cl2",
     "live-test": "testem  -f test/testem.json",
     "bare-compile": "cl2c -1 -b dev/main.cl2",
     "compile": "cl2c -1 -B src/main.cl2",
