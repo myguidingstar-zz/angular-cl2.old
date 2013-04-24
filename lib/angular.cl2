@@ -238,3 +238,9 @@ with the same name to it."
   [app-name & module-dclrs]
   `(defmodule ~app-name
      (:controller ~module-dclrs)))
+
+(defmacro defservice
+  "Defines a service for an app"
+  [app-name & module-dclrs]
+  `(defmodule ~app-name
+     (:service ~module-dclrs)))
