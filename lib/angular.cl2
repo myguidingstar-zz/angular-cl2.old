@@ -221,16 +221,33 @@
   `(set! (. $scope ~(symbol (str "-" (name fname))))
          (fn ~@body)))
 
+(defmacro set-last-app
+  "Saves app name (in compiler space) for further usage in `last-app` macro."
+  [app-name]
+  (def ^:dynamic *last-angular-app* (ref 0))
+  (dosync (ref-set *last-angular-app* app-name))
+  nil)
+
 (defmacro defapp
   "Creates an Angular app with specified dependencies, associates a var
 with the same name to it."
   [app-name app-deps]
-  `(def ~app-name (defmodule (~app-name ~app-deps))))
+  `(do (set-last-app ~app-name)
+       (def ~app-name (defmodule (~app-name ~app-deps)))))
 
 (defmacro defsinglemodule
   "Helper macro for `def[directive, controller etc]` macros"
   [module-type body]
-  (let [[app-name & body] body]
+  (let [[app-name body] (if ;; if app is specified, body is currently
+                            ;; `(app-name module-name & rest)`
+                            (symbol? (second body))
+                          [(first body) (rest body)]
+                          ;; else no app is specified then use
+                          ;; *last-angular-app*
+                          [(or @*last-angular-app*
+                               (throw
+                                (Exception. "No last Angular app defined!")))
+                           body])]
     `(defmodule ~app-name
        (~module-type ~body))))
 
