@@ -50,9 +50,9 @@
         ~final-module
         ~@final-body))))
 
-(defmacro defroute
+(defmacro defroutetable
   "Defines a route form. Usage:
-  (defroute
+  (defroutetable
     \"/an-url\" [myCtrl \"an-template-url.html\"]
     \"/alias\"  \"/stuff\"
    :default {:some :config :map ...}"
