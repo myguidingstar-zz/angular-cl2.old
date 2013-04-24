@@ -1,8 +1,8 @@
 
 {
   "name": "angular-cl2",
-  "version": "0.1.0",
-  "description": "Angular macros for ChlorineJS",
+  "version": "0.2.0",
+  "description": "Angular macros for ChlorineJS (a subset of Clojure)",
   "scripts": {
     "watch": "cl2c -d -p test/test.cl2",
     "live-test": "testem  -f test/testem.json",
@@ -19,6 +19,7 @@
     "angular",
     "qunit",
     "chlorinejs",
+    "clojure",
     "macro"
   ],
   "directories": {
