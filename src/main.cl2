@@ -12,16 +12,16 @@
       (. attrs -myDirective)
       (fn [value] (. elm (text (+ value 4))))))))
 
+(defcontroller myApp myCtrl
+  [$scope myService]
+  (def$ someNumber 12)
+  (defn$ addTwo [n] {:result (+ n 2)})
+  (defn$ serviceAdd [n]
+    (myService.addThree n)))
+
 (defmodule myApp
   (:filter (myFilter [] [s] (+ s 5))
            (yourFilter [] [s] (+ s 6)))
-  (:controller
-   (myCtrl
-    [$scope myService]
-    (def$ someNumber 12)
-    (defn$ addTwo [n] {:result (+ n 2)})
-    (defn$ serviceAdd [n]
-      (myService.addThree n))))
   (:service
    (myService
     []
