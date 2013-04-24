@@ -227,20 +227,24 @@ with the same name to it."
   [app-name app-deps]
   `(def ~app-name (defmodule (~app-name ~app-deps))))
 
+(defmacro defsinglemodule
+  "Helper macro for `def[directive, controller etc]` macros"
+  [module-type body]
+  (let [[app-name & body] body]
+    `(defmodule ~app-name
+       (~module-type ~body))))
+
 (defmacro defdirective
   "Defines a directive for an app"
-  [app-name & module-dclrs]
-  `(defmodule ~app-name
-     (:directive ~module-dclrs)))
+  [& body]
+  `(defsinglemodule :directive ~body))
 
 (defmacro defcontroller
   "Defines a controller for an app"
-  [app-name & module-dclrs]
-  `(defmodule ~app-name
-     (:controller ~module-dclrs)))
+  [& body]
+  `(defsinglemodule :controller ~body))
 
 (defmacro defservice
   "Defines a service for an app"
-  [app-name & module-dclrs]
-  `(defmodule ~app-name
-     (:service ~module-dclrs)))
+  [& body]
+  `(defsinglemodule :service ~body))
