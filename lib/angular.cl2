@@ -265,3 +265,8 @@ with the same name to it."
   "Defines a service for an app"
   [& body]
   `(defsinglemodule :service ~body))
+
+(defmacro deffactory
+  "Defines a factory for an app"
+  [& body]
+  `(defsinglemodule :factory ~body))
